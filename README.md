@@ -40,31 +40,12 @@ All plugins can be installed under `/godata`.
 
 ### Installing plugins using an environment configuration
 
-To install plugins, just add an ENV variable with the prefix `GOCD_PLUGIN_INSTALL_` and your name as `suffix`
-and the value being the download URL. The plugin will only be downloaded if not yet present.
+To install plugins, just add more environment lines To install multiple plugins, add several `environment lines` arguments as such:
 
-An example example would be `GOCD_PLUGIN_INSTALL_docker-elastic-agents=https://github.com/gocd-contrib/docker-elastic-agents/releases/download/v0.8.0/docker-elastic-agents-0.8.0.jar`:
-
-```shell
-docker run \
-  -e GOCD_PLUGIN_INSTALL_docker-elastic-agents=https://github.com/gocd-contrib/docker-elastic-agents/releases/download/v0.8.0/docker-elastic-agents-0.8.0.jar \
-  gocd/gocd-server:v20.1.0
 ```
-
-To install multiple plugins, add several `environment lines` arguments as such:
-
-```shell
-  environment:
-      GOCD_PLUGIN_INSTALL_kubernetes_elastic_agent_plugin: 'https://github.com/gocd/kubernetes-elastic-agents/releases/download/v3.0.0-156/kubernetes-elastic-agent-3.0.0-156.jar'
-      GOCD_PLUGIN_INSTALL_yaml_config_plugin: 'https://github.com/tomzo/gocd-yaml-config-plugin/releases/download/0.11.2/yaml-config-plugin-0.11.2.jar'0
-```
-
-### Installing plugins using a custom entry-point script (see below)
-
-```shell
-mkdir -p /godata/plugins/external
-curl --location --fail https://example.com/plugin.jar > /path/to/godata/plugins/external/plugin.jar
-chown -R 1000 /godata/plugins/external
+environment
+  CONFIG_GIT_REPO:    https://gocd_user:<password_or_auth_token>/config.git \
+  CONFIG_GIT_BRANCH: branch_with_config \
 ```
 
 ## Loading configuration from existing git repo
@@ -94,28 +75,18 @@ volumes:
 
 If you have several scripts in a directory that you'd like to execute:
 
-```shell
-docker run -v /path/to/script-dir:/docker-entrypoint.d ... gocd/gocd-server:v20.1.0
-```
-
-> **Note:** Ensure that your scripts are executable `chmod a+x` — you can add as many scripts as you like, `bash` is available on the container. If your script uses other scripting language (perl, python), please ensure that the scripting language is installed in the container.
-
-## Installing addons
-
-All addons can be installed under `/godata`.
-
-```
-mkdir -p /path/to/godata/addons
-curl --location --fail https://example.com/addon.jar > /path/to/godata/addons/plugin.jar
-chown -R 1000 /path/to/godata/addons
+```file
+volumes: 
+  - /path/to/script-dir:/docker-entrypoint.d ... gocd/gocd-server:v20.1.0
 ```
 
 ## Tweaking JVM options (memory, heap etc)
 
 JVM options can be tweaked using the environment variable `GOCD_SERVER_JVM_OPTS`.
 
-```shell
-docker run -e GOCD_SERVER_JVM_OPTS="-Xmx4096mb -Dfoo=bar" gocd/gocd-server:v20.1.0
+```file
+environment
+  GOCD_SERVER_JVM_OPTS: "-Xmx4096mb -Dfoo=bar" gocd/gocd-server:v20.1.0
 ```
 
 # Under the hood
@@ -135,11 +106,7 @@ The GoCD server runs as the `go` user, the location of the various directories i
 # Determine Server IP and Ports on Host
 
 Once the GoCD server is up, we should be able to determine its ip address and the ports mapped onto the host by doing the following:
-The IP address and ports of the GoCD server in a docker container are important to know as they will be used by the GoCD agents to connect to it.
-If you have started the container with
-```shell
-docker run --name server -it -p8153:8153 -p8154:8154 gocd/gocd-server:v20.1.0
-```
+The IP address and ports of the GoCD server in a docker container are important to know as they will be used by the GoCD agents to connect to it
 
 Then, the below commands will determine to GoCD server IP, server port and ssl port
 ```shell
@@ -161,22 +128,3 @@ With release `v19.6.0`, GoCD containers will run as non-root user, by default. T
 - Check the server logs `docker exec -it CONTAINER_ID tail -f /godata/logs/go-server.log` (or check the log file in the volume mount, if you're using one)
 
 
-# License
-
-```plain
-Copyright 2020 ThoughtWorks, Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
-
-[0]: https://www.gocd.org/download/
