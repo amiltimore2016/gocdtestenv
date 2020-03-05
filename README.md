@@ -8,7 +8,13 @@ Please make sure to log them at https://github.com/amiltimore2016/gocdtestenv/.
 
 # Usage
 
-Start the container with this:
+In macOS install make
+
+```
+brew install make
+```
+
+Start docker compose with this:
 
 ```
 make run
@@ -36,16 +42,6 @@ volumes:
 ## Installing plugins
 
 All plugins can be installed under `/godata`.
-
-### Installing plugins using an environment configuration
-
-To install plugins, just add more environment lines To install multiple plugins, add several `environment lines` arguments as such:
-
-```
-environment:
-  CONFIG_GIT_REPO:    https://gocd_user:<password_or_auth_token>/config.git
-  CONFIG_GIT_BRANCH: branch_with_config
-```
 
 ## Loading configuration from existing git repo
 To load existing configuration from git repo, just add an ENV variable `CONFIG_GIT_REPO`.
