@@ -1,0 +1,36 @@
+version: '2'
+services:
+  go-server:
+    image: gocd/gocd-server:v19.5.0
+    ports:
+      - "8153:8153"
+      - "8154:8154"
+    environment:
+      GOCD_PLUGIN_INSTALL_kubernetes_elastic_agent_plugin: 'https://github.com/gocd/kubernetes-elastic-agents/releases/download/v3.0.0-156/kubernetes-elastic-agent-3.0.0-156.jar'
+      GOCD_PLUGIN_INSTALL_yaml_config_plugin: 'https://github.com/tomzo/gocd-yaml-config-plugin/releases/download/0.11.2/yaml-config-plugin-0.11.2.jar'
+    volumes:
+      - ./godata/config/cruise-config.xml:/godata/config/cruise-config.xml
+      - ./godata/config/passwd:/godata/passwd
+  go-agent1:
+    image: gocd/gocd-agent-ubuntu-16.04:v17.9.0
+    links:
+      - "go-server"
+    depends_on:
+      - "go-server"
+    environment:
+      AGENT_AUTO_REGISTER_KEY: '123456789abcdefgh987654321'
+      GO_SERVER_URL: https://go-server:8154/go
+  go-agent2:
+    image: gocd/gocd-agent-ubuntu-16.04:v17.9.0
+    links:
+      - "go-server"
+    depends_on:
+      - "go-server"
+    environment:
+      AGENT_AUTO_REGISTER_KEY: '123456789abcdefgh987654321'
+      GO_SERVER_URL: https://go-server:8154/go
+#-e GOCD_PLUGIN_INSTALL_kubernetes_elastic_agent_plugin=https://github.com/gocd/kubernetes-elastic-agents/releases/download/v3.0.0-156/kubernetes-elastic-agent-3.0.0-156.jar \
+#  -e GOCD_PLUGIN_INSTALL_yaml_config_plugin=https://github.com/tomzo/gocd-yaml-config-plugin/releases/download/0.11.2/yaml-config-plugin-0.11.2.jar \
+#  -p8154:8154 -p8153:8153 \
+#  -v ${PWD}/passwd:/godata/passwd -v ${PWD}/cruise-config.xml:/godata/config/cruise-config.xml \
+#  gocd/gocd-server:v19.5.0#

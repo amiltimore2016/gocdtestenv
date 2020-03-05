@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="124">
+  <server artifactsdir="artifacts" agentAutoRegisterKey="123456789abcdefgh987654321" webhookSecret="57b5b4a5-e839-4735-935c-168e97b80033" commandRepositoryLocation="default" serverId="239404b7-69fe-4fc9-81e9-945654461562" tokenGenerationKey="59cc6208-d0e4-439a-9adf-a9e447d22002">
+    <security>
+      <authConfigs>
+        <authConfig id="passwd" pluginId="cd.go.authentication.passwordfile">
+          <property>
+            <key>PasswordFilePath</key>
+            <value>/godata/passwd</value>
+          </property>
+        </authConfig>
+      </authConfigs>
+    </security>
+    <backup emailOnSuccess="true" emailOnFailure="true" />
+  </server>
+  <agents>
+    <agent hostname="c7ff4eceb8eb" ipaddress="172.18.0.4" uuid="289d3016-1568-48e2-a3ff-23221d9834eb" />
+    <agent hostname="6d091a51b9b5" ipaddress="172.18.0.3" uuid="02d7f0df-d63d-47c1-976a-7746bec79093" />
+    <agent hostname="60939e8ac376" ipaddress="172.19.0.4" uuid="4edf3d05-2fe5-4d6f-9e45-9f44bd260544" />
+    <agent hostname="1a437ed0cc8a" ipaddress="172.19.0.3" uuid="e81f150d-dffd-4f2f-8faf-87364749d187" />
+  </agents>
+</cruise>
