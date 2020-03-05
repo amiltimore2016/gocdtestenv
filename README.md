@@ -64,7 +64,7 @@ To execute custom script(s) during the container boostrap, but **before** the Go
 
 ```file
 volumes:
-  - /path/to/your/script.sh:/docker-entrypoint.d/your-script.sh` like so:
+  - /path/to/your/script.sh:/docker-entrypoint.d/your-script.sh
 ```
 
 If you have several scripts in a directory that you'd like to execute:
