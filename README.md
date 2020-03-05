@@ -4,14 +4,14 @@ An alpine based docker image for [GoCD server](https://www.gocd.org).
 
 # Issues, feedback?
 
-Please make sure to log them at https://github.com/gocd/gocd.
+Please make sure to log them at https://github.com/amiltimore2016/gocdtestenv/.
 
 # Usage
 
 Start the container with this:
 
-```shell
-docker run -d -p8153:8153 -p8154:8154 gocd/gocd-server:v20.1.0
+```
+make run
 ```
 
 This will expose container ports 8153(http) and 8154(https) onto your server.
@@ -23,10 +23,13 @@ You can now open `http://localhost:8153` and `https://localhost:8154`
 
 The GoCD server will store all configuration, pipeline history database,
 artifacts, plugins, and logs into `/godata`. If you'd like to provide secure
-credentials like SSH private keys among other things, you can mount `/home/go`
+credentials like SSH private keys among other things, you can mount  `/home/go`
+by editing the docker-compose.yml file and adding a stanza in the volumes section.
 
-```shell
-docker run -v /path/to/godata:/godata -v /path/to/home-dir:/home/go gocd/gocd-server:v20.1.0
+```file
+volumes:
+      - ./godata/home:/home/go
+
 ```
 
 > **Note:** Ensure that `/path/to/home-dir` and `/path/to/godata` is accessible by the `go` user in container (`go` user - uid `1000`).
@@ -48,13 +51,12 @@ docker run \
   gocd/gocd-server:v20.1.0
 ```
 
-To install multiple plugins, add several `-e` arguments as such:
+To install multiple plugins, add several `environment lines` arguments as such:
 
 ```shell
-docker run \
-  -e GOCD_PLUGIN_INSTALL_a-plugin=https://example.com/a-plugin.jar \
-  -e GOCD_PLUGIN_INSTALL_b-plugin=https://example.com/b-plugin.jar \
-  gocd/gocd-server:v20.1.0
+  environment:
+      GOCD_PLUGIN_INSTALL_kubernetes_elastic_agent_plugin: 'https://github.com/gocd/kubernetes-elastic-agents/releases/download/v3.0.0-156/kubernetes-elastic-agent-3.0.0-156.jar'
+      GOCD_PLUGIN_INSTALL_yaml_config_plugin: 'https://github.com/tomzo/gocd-yaml-config-plugin/releases/download/0.11.2/yaml-config-plugin-0.11.2.jar'0
 ```
 
 ### Installing plugins using a custom entry-point script (see below)
@@ -72,22 +74,23 @@ To load another branch, define an ENV variable `CONFIG_GIT_BRANCH`.
 If `/godata/config` already is git repo then CONFIG_GIT_REPO will be ignored.
 Cloned repo **must** contain all files from `/godata/config` dir.
 
-```shell
-docker run \
-  -e CONFIG_GIT_REPO=https://gocd_user:<password_or_auth_token>/config.git \
-  -e CONFIG_GIT_BRANCH=branch_with_config \
-  gocd/gocd-server:v20.1.0
+```file
+environment
+  CONFIG_GIT_REPO:    https://gocd_user:<password_or_auth_token>/config.git \
+  CONFIG_GIT_BRANCH: branch_with_config \
 ```
 *Checkouted content would overwrite files in `/godata/config/`*.
 
 
 ## Running custom entrypoint scripts
 
-To execute custom script(s) during the container boostrap, but **before** the GoCD server starts just add `-v /path/to/your/script.sh:/docker-entrypoint.d/your-script.sh` like so:
+To execute custom script(s) during the container boostrap, but **before** the GoCD server starts just add a volume stanza
 
-```shell
-docker run -v /path/to/your/script.sh:/docker-entrypoint.d/your-script.sh ... gocd/gocd-server:v20.1.0
+```file
+volumes:
+  - /path/to/your/script.sh:/docker-entrypoint.d/your-script.sh` like so:
 ```
+
 
 If you have several scripts in a directory that you'd like to execute:
 
