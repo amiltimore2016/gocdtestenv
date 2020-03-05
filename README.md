@@ -1,4 +1,4 @@
-# GoCD Server Docker image
+# Gocd Docker Composer test environment
 
 An alpine based docker image for [GoCD server](https://www.gocd.org).
 
