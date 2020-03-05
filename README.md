@@ -43,7 +43,7 @@ All plugins can be installed under `/godata`.
 To install plugins, just add more environment lines To install multiple plugins, add several `environment lines` arguments as such:
 
 ```
-environment
+environment:
   CONFIG_GIT_REPO:    https://gocd_user:<password_or_auth_token>/config.git \
   CONFIG_GIT_BRANCH: branch_with_config \
 ```
@@ -56,11 +56,11 @@ If `/godata/config` already is git repo then CONFIG_GIT_REPO will be ignored.
 Cloned repo **must** contain all files from `/godata/config` dir.
 
 ```file
-environment
+environment:
   CONFIG_GIT_REPO:    https://gocd_user:<password_or_auth_token>/config.git \
   CONFIG_GIT_BRANCH: branch_with_config \
 ```
-*Checkouted content would overwrite files in `/godata/config/`*.
+*Checkd out content would overwrite files in `/godata/config/`*.
 
 
 ## Running custom entrypoint scripts
@@ -85,7 +85,7 @@ volumes:
 JVM options can be tweaked using the environment variable `GOCD_SERVER_JVM_OPTS`.
 
 ```file
-environment
+environment:
   GOCD_SERVER_JVM_OPTS: "-Xmx4096mb -Dfoo=bar" gocd/gocd-server:v20.1.0
 ```
 
@@ -114,10 +114,6 @@ docker inspect --format='{{(index (index .NetworkSettings.IPAddress))}}' server
 docker inspect --format='{{(index (index .NetworkSettings.Ports "8153/tcp") 0).HostPort}}' server
 docker inspect --format='{{(index (index .NetworkSettings.Ports "8154/tcp") 0).HostPort}}' server
 ```
-
-# Running GoCD Containers as Non Root
-
-With release `v19.6.0`, GoCD containers will run as non-root user, by default. The Dockerized GoCD application will run with user `go` (uid: `1000`) and group `root` (gid: `0`) instead of running as user `root` (uid: `0`) and group `root` (gid: `0`). For more information, checkout [Running Dockerized GoCD Containers as Non Root](https://www.gocd.org/2019/06/25/GoCD-non-root-containers/) blog post.
 
 # Troubleshooting
 
