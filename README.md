@@ -1,6 +1,6 @@
 # Gocd Docker Composer test environment
 
-An alpine based docker image for [GoCD server](https://www.gocd.org).
+A Centos based docker image for [GoCD server](https://www.gocd.org).
 
 # Issues, feedback?
 
