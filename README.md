@@ -29,7 +29,6 @@ by editing the docker-compose.yml file and adding a stanza in the volumes sectio
 ```file
 volumes:
       - ./godata/home:/home/go
-
 ```
 
 > **Note:** Ensure that `/path/to/home-dir` and `/path/to/godata` is accessible by the `go` user in container (`go` user - uid `1000`).
@@ -44,8 +43,8 @@ To install plugins, just add more environment lines To install multiple plugins,
 
 ```
 environment:
-  CONFIG_GIT_REPO:    https://gocd_user:<password_or_auth_token>/config.git \
-  CONFIG_GIT_BRANCH: branch_with_config \
+  CONFIG_GIT_REPO:    https://gocd_user:<password_or_auth_token>/config.git
+  CONFIG_GIT_BRANCH: branch_with_config
 ```
 
 ## Loading configuration from existing git repo
@@ -57,7 +56,7 @@ Cloned repo **must** contain all files from `/godata/config` dir.
 
 ```file
 environment:
-  CONFIG_GIT_REPO:    https://gocd_user:<password_or_auth_token>/config.git \
+  CONFIG_GIT_REPO:    https://gocduser:<password_or_auth_token>/config.git \
   CONFIG_GIT_BRANCH: branch_with_config \
 ```
 *Checkd out content would overwrite files in `/godata/config/`*.
@@ -72,12 +71,11 @@ volumes:
   - /path/to/your/script.sh:/docker-entrypoint.d/your-script.sh` like so:
 ```
 
-
 If you have several scripts in a directory that you'd like to execute:
 
 ```file
 volumes: 
-  - /path/to/script-dir:/docker-entrypoint.d ... gocd/gocd-server:v20.1.0
+  - /path/to/script-dir:/docker-entrypoint.d
 ```
 
 ## Tweaking JVM options (memory, heap etc)
@@ -86,7 +84,7 @@ JVM options can be tweaked using the environment variable `GOCD_SERVER_JVM_OPTS`
 
 ```file
 environment:
-  GOCD_SERVER_JVM_OPTS: "-Xmx4096mb -Dfoo=bar" gocd/gocd-server:v20.1.0
+  GOCD_SERVER_JVM_OPTS: "-Xmx4096mb -Dfoo=bar" 
 ```
 
 # Under the hood
