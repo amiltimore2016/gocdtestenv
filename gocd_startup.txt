@@ -13,6 +13,3 @@ curl 'https://localhost:8153/go/api/admin/encrypt' \
 -X POST -d '{
   "value": "badger"
 }'
-
-
-Trend1ngSh1f#maker
