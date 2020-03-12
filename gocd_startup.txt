@@ -15,4 +15,3 @@ curl 'https://localhost:8153/go/api/admin/encrypt' \
 }'
 
 
-Trend1ngSh1f#maker
