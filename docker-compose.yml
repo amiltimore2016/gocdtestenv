@@ -9,10 +9,11 @@ services:
       GOCD_PLUGIN_INSTALL_kubernetes_elastic_agent_plugin: 'https://github.com/gocd/kubernetes-elastic-agents/releases/download/v3.0.0-156/kubernetes-elastic-agent-3.0.0-156.jar'
       GOCD_PLUGIN_INSTALL_yaml_config_plugin: 'https://github.com/tomzo/gocd-yaml-config-plugin/releases/download/0.11.2/yaml-config-plugin-0.11.2.jar'
     volumes:
-      - ./godata/config/cruise-config.xml:/godata/config/cruise-config.xml
-      - ./godata/config/passwd:/godata/passwd
+      - ${PWD}/godata/config/cruise-config.xml:/godata/config/cruise-config.xml
+      - ${PWD}/godata/config/password_file:/godata/passwd
   go-agent1:
-    image: gocd/gocd-agent-ubuntu-16.04:v17.9.0
+    # image: gocd/gocd-agent-ubuntu-16.04:v17.9.0
+    image: php-agent:latest
     links:
       - "go-server"
     depends_on:
@@ -21,7 +22,8 @@ services:
       AGENT_AUTO_REGISTER_KEY: '123456789abcdefgh987654321'
       GO_SERVER_URL: https://go-server:8154/go
   go-agent2:
-    image: gocd/gocd-agent-ubuntu-16.04:v17.9.0
+    #image: gocd/gocd-agent-ubuntu-16.04:v17.9.0
+    image: rvm-agent:latest
     links:
       - "go-server"
     depends_on:
